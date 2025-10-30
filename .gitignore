@@ -1,7 +1,7 @@
-# Ignore all except models
-emotion_model/*
-!emotion_model/models/
-!emotion_model/models/baseline_tfidf_lr.pkl
+# # Ignore all except models
+# emotion_model/*
+# !emotion_model/models/
+# !emotion_model/models/baseline_tfidf_lr.pkl
 __pycache__/
 *.pt
 *.zip
