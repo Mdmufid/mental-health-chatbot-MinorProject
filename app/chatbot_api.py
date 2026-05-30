@@ -2,11 +2,24 @@
 # 🧠 Advanced AI Mental Health Chatbot (OpenRouter Integration)
 # =====================================================
 
-import os, json, re, requests
+import os
+import sys
+
+
+_python313 = r"C:\Users\HP\AppData\Local\Programs\Python\Python313\python.exe"
+if os.path.exists(_python313) and os.path.abspath(sys.executable).lower() != _python313.lower():
+    os.execv(_python313, [_python313, os.path.abspath(__file__), *sys.argv[1:]])
+
+
+import json, re, requests
 from collections import deque
 from dotenv import load_dotenv
 from flask import Flask, request, jsonify, render_template
-from flask_cors import CORS
+try:
+    from flask_cors import CORS
+except ModuleNotFoundError:
+    def CORS(app, *args, **kwargs):
+        return app
 import torch
 from transformers import DistilBertTokenizerFast, DistilBertForSequenceClassification
 
@@ -50,7 +63,6 @@ else:
 
 # Short-term conversation memory
 conversation_memory = deque(maxlen=8)
-emotion_memory = deque(maxlen=8)
 
 # =====================================================
 # 4️⃣ Emotion Mapping
@@ -160,7 +172,6 @@ def generate_response(user_message):
     reply = generate_llm_reply(user_message, broad_emotion, fine_emotion, context)
 
     conversation_memory.append({"user": user_message, "bot": reply})
-    emotion_memory.append(broad_emotion)
 
     return {"emotion": broad_emotion, "reply": reply}
 
